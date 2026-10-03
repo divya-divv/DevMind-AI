@@ -1,202 +1,163 @@
-\# DevMind AI 🚀
+ 🚀 DevMind-AI — AI-Powered Career Assistant
 
+DevMind-AI is a full-stack resume analysis application designed to help students and job seekers understand their resume, identify technical skills, discover missing skills, and receive career improvement suggestions.
 
+## 🌟 Features
 
-\## AI-Powered Resume \& Career Assistant
+* 📄 Upload and analyze PDF resumes
+* 🔍 Automatic resume text extraction
+* 🧠 Technical skill detection
+* 📊 ATS-style resume score
+* 🎯 Dynamic missing-skill detection
+* 💡 Resume improvement suggestions
+* 💼 Recommended job roles
+* 🗺️ Career development roadmap
+* 📧 Email and phone number extraction
+* 🌐 Deployed full-stack application
 
+## 🛠️ Technologies Used
 
+### Frontend
 
-DevMind AI is a full-stack web application that analyzes a user's resume and provides career insights based on the skills detected in the resume.
+* React
+* Vite
+* JavaScript
+* HTML
+* CSS
 
+### Backend
 
+* Python
+* FastAPI
+* PyPDF
+* REST API
 
-The application helps users understand their current technical profile, identify missing skills, explore suitable job roles, and follow a career development roadmap.
+### Tools & Deployment
 
+* Git
+* GitHub
+* Vercel
+* Render
 
-
-\---
-
-
-
-\## ✨ Features
-
-
-
-\* 📄 PDF Resume Upload
-
-\* 🔍 Automatic Resume Analysis
-
-\* 🧠 Skill Detection
-
-\* 📊 Skill Match Score
-
-\* ⚠️ Missing Skill Detection
-
-\* 💡 Resume Improvement Suggestions
-
-\* 💼 Recommended Job Roles
-
-\* 🗺️ Career Roadmap
-
-\* ⚡ FastAPI Backend
-
-\* 🎨 React Professional Dashboard
-
-
-
-\---
-
-
-
-\## 🛠️ Technologies Used
-
-
-
-\### Frontend
-
-
-
-\* React
-
-\* Vite
-
-\* JavaScript
-
-\* HTML
-
-\* CSS
-
-
-
-\### Backend
-
-
-
-\* Python
-
-\* FastAPI
-
-\* Uvicorn
-
-\* PyPDF
-
-
-
-\---
-
-
-
-\## 🔄 How DevMind AI Works
-
-
+## 🔄 How It Works
 
 ```text
-
-&#x20;       User
-
-&#x20;         ↓
-
-&#x20;  Upload Resume
-
-&#x20;         ↓
-
-&#x20;  React Frontend
-
-&#x20;         ↓
-
-&#x20;  FastAPI Backend
-
-&#x20;         ↓
-
-&#x20;  PDF Text Extraction
-
-&#x20;         ↓
-
-&#x20;   Skill Detection
-
-&#x20;         ↓
-
-&#x20;  Resume Analysis
-
-&#x20;         ↓
-
-&#x20;┌────────┼───────────┐
-
-&#x20;↓        ↓           ↓
-
-Skills   Missing    Career
-
-&#x20;       Skills      Insights
-
-&#x20;         ↓
-
-&#x20;   Results Dashboard
-
+User uploads resume
+        ↓
+React Frontend
+        ↓
+FastAPI Backend
+        ↓
+PDF Text Extraction
+        ↓
+Resume Analysis
+        ↓
+Skill Detection
+        ↓
+Missing Skill Detection
+        ↓
+Score + Suggestions + Career Insights
+        ↓
+Results displayed to user
 ```
 
+## 📊 Resume Analysis
 
+DevMind-AI analyzes the uploaded resume and provides:
 
-\---
+* Resume score
+* Detected technical skills
+* Missing skills to consider learning
+* Resume improvement suggestions
+* Recommended career roles
+* Career roadmap
 
+## 🎯 Example Analysis
 
+### Detected Skills
 
-\## 📊 Main Features
+* Python
+* Java
+* C
+* SQL
+* HTML
+* CSS
+* JavaScript
+* React
+* Machine Learning
+* Artificial Intelligence
+* Git
+* GitHub
+* FastAPI
 
+### Missing Skills
 
+The application dynamically identifies skills that are not detected in the uploaded resume, such as:
 
-\### 1. Resume Analysis
+* Docker
+* REST API
+* AWS
+* PostgreSQL
+* MongoDB
+* TypeScript
+* Linux
+* Data Structures
+* Algorithms
+* Cloud Computing
 
+## 🌐 Live Demo
 
+**Frontend:**
+https://dev-mind-ai-gamma.vercel.app/
 
-The application extracts text from an uploaded PDF resume and analyzes the available information.
+**Backend:**
+https://devmind-ai-backend-w716.onrender.com/
 
+## 📁 Project Structure
 
+```text
+DevMind-AI/
+│
+├── backend/
+│   ├── analyzer.py
+│   ├── main.py
+│   └── requirements.txt
+│
+├── frontend/
+│   ├── src/
+│   │   ├── App.jsx
+│   │   ├── App.css
+│   │   ├── index.css
+│   │   └── main.jsx
+│   │
+│   ├── package.json
+│   └── index.html
+│
+├── venv/
+├── README.md
+└── .gitignore
+```
 
-\### 2. Skill Detection
+## 🚀 Future Improvements
 
+* AI-powered resume recommendations
+* Job description matching
+* Resume keyword optimization
+* Skill learning recommendations
+* Resume section quality analysis
+* Database integration
+* User authentication
+* Resume history and analytics
+* Advanced career recommendations
 
+## 👩‍💻 Project Purpose
 
-DevMind AI identifies technical skills mentioned in the resume.
+This project was developed as a practical full-stack application to explore resume processing, REST APIs, frontend-backend integration, and deployment.
 
+## 📌 Disclaimer
 
+The resume score provided by DevMind-AI is a project-generated ATS-style score intended for educational and demonstration purposes. It is not an official score from a commercial Applicant Tracking System.
 
-\### 3. Skill Match Score
+---
 
-
-
-The application calculates a prototype skill-match percentage based on the skills detected from the resume.
-
-
-
-\### 4. Missing Skills
-
-
-
-Skills that are not detected are displayed so users can consider areas for further learning.
-
-
-
-\### 5. Resume Improvement Suggestions
-
-
-
-The application provides suggestions based on the information detected in the resume.
-
-
-
-\### 6. Job Role Recommendations
-
-
-
-Possible job roles are suggested based on the detected technical skills.
-
-
-
-\### 7. Career Roadmap
-
-
-
-A step-by-step roadma
-
-
-
+⭐ **DevMind-AI — Making Resumes Smarter with Technology**
