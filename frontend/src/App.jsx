@@ -54,7 +54,6 @@ function App() {
   return (
     <div className="app">
 
-      {/* NAVBAR */}
       <nav>
         <div className="logo">DevMind AI</div>
 
@@ -65,7 +64,6 @@ function App() {
         </div>
       </nav>
 
-      {/* HERO */}
       <section id="home" className="hero">
 
         <p className="tagline">AI-POWERED CAREER ASSISTANT</p>
@@ -81,7 +79,6 @@ function App() {
           skills, contact information and career readiness.
         </p>
 
-        {/* ANALYZER */}
         <div className="analyzer-card">
 
           <h2>Analyze Your Resume</h2>
@@ -111,13 +108,11 @@ function App() {
         </div>
       </section>
 
-      {/* RESULTS */}
       {result && (
         <section className="results">
 
           <h2>Resume Analysis Result</h2>
 
-          {/* ATS SCORE */}
           <div className="score-card">
             <h3>ATS Score</h3>
 
@@ -128,7 +123,6 @@ function App() {
             <p>Resume skill match score</p>
           </div>
 
-          {/* CONTACT INFORMATION */}
           <div className="contact-info">
 
             <p>
@@ -151,10 +145,10 @@ function App() {
 
           </div>
 
-          {/* DETECTED SKILLS */}
           <h3>Detected Skills</h3>
 
           <div className="skills">
+
             {result.skills && result.skills.length > 0 ? (
               result.skills.map((skill, index) => (
                 <span key={index}>{skill}</span>
@@ -162,9 +156,11 @@ function App() {
             ) : (
               <p>No skills detected.</p>
             )}
+
           </div>
 
           {/* MISSING SKILLS */}
+
           <h3>Missing Skills</h3>
 
           <p>
@@ -172,11 +168,23 @@ function App() {
             your technical profile.
           </p>
 
-          <p>
-            🎉 No missing skills detected!
-          </p>
+          <div className="skills">
 
-          {/* SUGGESTIONS */}
+            {result.missing_skills &&
+            result.missing_skills.length > 0 ? (
+
+              result.missing_skills.map((skill, index) => (
+                <span key={index}>{skill}</span>
+              ))
+
+            ) : (
+
+              <p>🎉 No missing skills detected!</p>
+
+            )}
+
+          </div>
+
           <h3>Resume Improvement Suggestions</h3>
 
           <p>
@@ -185,13 +193,14 @@ function App() {
           </p>
 
           <ol>
+
             {result.suggestions &&
               result.suggestions.map((suggestion, index) => (
                 <li key={index}>{suggestion}</li>
               ))}
+
           </ol>
 
-          {/* JOB ROLES */}
           <h3>Recommended Job Roles</h3>
 
           <p>
@@ -204,7 +213,6 @@ function App() {
             <li>AI / Machine Learning Intern</li>
           </ul>
 
-          {/* CAREER ROADMAP */}
           <h3>Career Roadmap</h3>
 
           <p>
@@ -223,7 +231,6 @@ function App() {
         </section>
       )}
 
-      {/* FEATURES */}
       <section id="features" className="features">
 
         <h2>What DevMind AI Can Do</h2>
@@ -256,7 +263,6 @@ function App() {
         </div>
       </section>
 
-      {/* ABOUT */}
       <section id="about" className="about">
 
         <h2>About DevMind AI</h2>
@@ -269,7 +275,6 @@ function App() {
 
       </section>
 
-      {/* FOOTER */}
       <footer>
         © 2026 DevMind AI • Intelligent Resume Analysis
       </footer>

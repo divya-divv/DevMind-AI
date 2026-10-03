@@ -1,6 +1,5 @@
 import re
 
-
 TECHNICAL_SKILLS = [
     "python",
     "java",
@@ -24,17 +23,27 @@ TECHNICAL_SKILLS = [
     "numpy",
 ]
 
+RECOMMENDED_SKILLS = [
+    "docker",
+    "rest api",
+    "aws",
+    "postgresql",
+    "mongodb",
+    "typescript",
+    "linux",
+    "data structures",
+    "algorithms",
+    "cloud computing",
+]
+
 
 def calculate_resume_score(text, skills, email, phone):
     text_lower = text.lower()
 
     score = 0
 
-    # 1. Technical Skills - 25 points
-    skill_score = min(len(skills) * 2, 25)
-    score += skill_score
+    score += min(len(skills) * 2, 25)
 
-    # 2. Projects - 20 points
     project_keywords = [
         "project",
         "projects",
@@ -43,12 +52,9 @@ def calculate_resume_score(text, skills, email, phone):
         "built",
     ]
 
-    project_found = any(word in text_lower for word in project_keywords)
-
-    if project_found:
+    if any(word in text_lower for word in project_keywords):
         score += 20
 
-    # 3. Education - 15 points
     education_keywords = [
         "education",
         "bachelor",
@@ -60,12 +66,9 @@ def calculate_resume_score(text, skills, email, phone):
         "university",
     ]
 
-    education_found = any(word in text_lower for word in education_keywords)
-
-    if education_found:
+    if any(word in text_lower for word in education_keywords):
         score += 15
 
-    # 4. Experience / Internship - 15 points
     experience_keywords = [
         "experience",
         "internship",
@@ -74,14 +77,9 @@ def calculate_resume_score(text, skills, email, phone):
         "work experience",
     ]
 
-    experience_found = any(
-        word in text_lower for word in experience_keywords
-    )
-
-    if experience_found:
+    if any(word in text_lower for word in experience_keywords):
         score += 15
 
-    # 5. Important Resume Keywords - 10 points
     keyword_groups = [
         ["skills", "technical skills"],
         ["certification", "certifications"],
@@ -89,22 +87,16 @@ def calculate_resume_score(text, skills, email, phone):
         ["linkedin", "github"],
     ]
 
-    keyword_points = 0
-
     for group in keyword_groups:
         if any(word in text_lower for word in group):
-            keyword_points += 2.5
+            score += 2.5
 
-    score += keyword_points
-
-    # 6. Contact Information - 5 points
     if email:
         score += 2.5
 
     if phone:
         score += 2.5
 
-    # 7. Resume Completeness - 10 points
     sections = [
         "summary",
         "skills",
@@ -117,18 +109,14 @@ def calculate_resume_score(text, skills, email, phone):
         1 for section in sections if section in text_lower
     )
 
-    completeness_score = min(sections_found * 2, 10)
-
-    score += completeness_score
+    score += min(sections_found * 2, 10)
 
     return min(round(score), 100)
 
 
 def analyze_resume(text):
-
     text_lower = text.lower()
 
-    # Detect email
     email_match = re.search(
         r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}",
         text
@@ -136,7 +124,6 @@ def analyze_resume(text):
 
     email = email_match.group(0) if email_match else None
 
-    # Detect phone number
     phone_match = re.search(
         r"\b[6-9]\d{9}\b",
         text
@@ -144,15 +131,18 @@ def analyze_resume(text):
 
     phone = phone_match.group(0) if phone_match else None
 
-    # Detect skills
     detected_skills = []
 
     for skill in TECHNICAL_SKILLS:
-
         if skill in text_lower:
             detected_skills.append(skill)
 
-    # Calculate score
+    missing_skills = []
+
+    for skill in RECOMMENDED_SKILLS:
+        if skill not in text_lower:
+            missing_skills.append(skill)
+
     resume_score = calculate_resume_score(
         text,
         detected_skills,
@@ -160,7 +150,6 @@ def analyze_resume(text):
         phone
     )
 
-    # Suggestions
     suggestions = []
 
     if len(detected_skills) < 8:
@@ -172,13 +161,13 @@ def analyze_resume(text):
             "Keep your technical skills focused on technologies you can demonstrate."
         )
 
-    if "project" not in text_lower:
+    if "project" in text_lower:
         suggestions.append(
-            "Add projects with clear descriptions and technologies used."
+            "Add measurable results to your projects, such as accuracy, performance, users, or time saved."
         )
     else:
         suggestions.append(
-            "Add measurable results to your projects, such as accuracy, performance, users, or time saved."
+            "Add projects with clear descriptions and technologies used."
         )
 
     if "experience" not in text_lower and "internship" not in text_lower:
@@ -200,5 +189,6 @@ def analyze_resume(text):
         "phone": phone,
         "skills": detected_skills,
         "skill_count": len(detected_skills),
+        "missing_skills": missing_skills,
         "suggestions": suggestions,
     }
