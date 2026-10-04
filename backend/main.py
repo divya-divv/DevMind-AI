@@ -1,15 +1,16 @@
 from fastapi import FastAPI, UploadFile, File
 from fastapi.middleware.cors import CORSMiddleware
 from pypdf import PdfReader
-
-from .analyzer import analyze_resume
+from analyzer import analyze_resume
+import os
 
 app = FastAPI(title="DevMind-AI")
 
+# Allow React frontend to connect to FastAPI
 app.add_middleware(
     CORSMiddleware,
     allow_origins=["*"],
-    allow_credentials=False,
+    allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
@@ -25,19 +26,30 @@ def home():
 @app.post("/analyze")
 async def analyze(file: UploadFile = File(...)):
 
-    contents = await file.read()
+    # Save uploaded resume temporarily
+    file_path = "temp_resume.pdf"
 
-    with open("temp_resume.pdf", "wb") as f:
-        f.write(contents)
+    with open(file_path, "wb") as buffer:
+        buffer.write(await file.read())
 
-    reader = PdfReader("temp_resume.pdf")
+    try:
+        # Read PDF
+        reader = PdfReader(file_path)
 
-    text = ""
+        text = ""
 
-    for page in reader.pages:
-        extracted = page.extract_text()
+        for page in reader.pages:
+            page_text = page.extract_text()
 
-        if extracted:
-            text += extracted
+            if page_text:
+                text += page_text + "\n"
 
-    return analyze_resume(text)
+        # Analyze resume
+        result = analyze_resume(text)
+
+        return result
+
+    finally:
+        # Delete temporary file
+        if os.path.exists(file_path):
+            os.remove(file_path)

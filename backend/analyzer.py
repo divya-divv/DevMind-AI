@@ -1,6 +1,8 @@
 import re
 
-TECHNICAL_SKILLS = [
+
+# Skills database
+SKILLS = [
     "python",
     "java",
     "c",
@@ -13,182 +15,231 @@ TECHNICAL_SKILLS = [
     "node.js",
     "machine learning",
     "artificial intelligence",
+    "deep learning",
+    "data science",
     "git",
     "github",
     "fastapi",
     "django",
     "flask",
-    "tensorflow",
-    "pandas",
-    "numpy",
-]
-
-RECOMMENDED_SKILLS = [
     "docker",
     "rest api",
-    "aws",
-    "postgresql",
     "mongodb",
-    "typescript",
-    "linux",
-    "data structures",
-    "algorithms",
-    "cloud computing",
+    "mysql",
+    "postgresql",
+    "tensorflow",
+    "pytorch",
+    "aws",
+    "azure",
 ]
 
 
-def calculate_resume_score(text, skills, email, phone):
-    text_lower = text.lower()
-
-    score = 0
-
-    score += min(len(skills) * 2, 25)
-
-    project_keywords = [
-        "project",
-        "projects",
-        "developed",
-        "implemented",
-        "built",
-    ]
-
-    if any(word in text_lower for word in project_keywords):
-        score += 20
-
-    education_keywords = [
-        "education",
-        "bachelor",
-        "degree",
-        "engineering",
-        "b.tech",
-        "b.e",
-        "college",
-        "university",
-    ]
-
-    if any(word in text_lower for word in education_keywords):
-        score += 15
-
-    experience_keywords = [
-        "experience",
-        "internship",
-        "intern",
-        "training",
-        "work experience",
-    ]
-
-    if any(word in text_lower for word in experience_keywords):
-        score += 15
-
-    keyword_groups = [
-        ["skills", "technical skills"],
-        ["certification", "certifications"],
-        ["achievement", "achievements"],
-        ["linkedin", "github"],
-    ]
-
-    for group in keyword_groups:
-        if any(word in text_lower for word in group):
-            score += 2.5
-
-    if email:
-        score += 2.5
-
-    if phone:
-        score += 2.5
-
-    sections = [
-        "summary",
-        "skills",
-        "education",
-        "project",
-        "experience",
-    ]
-
-    sections_found = sum(
-        1 for section in sections if section in text_lower
-    )
-
-    score += min(sections_found * 2, 10)
-
-    return min(round(score), 100)
-
-
-def analyze_resume(text):
-    text_lower = text.lower()
-
-    email_match = re.search(
+def extract_email(text):
+    match = re.search(
         r"[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}",
         text
     )
 
-    email = email_match.group(0) if email_match else None
+    return match.group(0) if match else "Not detected"
 
-    phone_match = re.search(
-        r"\b[6-9]\d{9}\b",
+
+def extract_phone(text):
+    match = re.search(
+        r"(?<!\d)(?:\+91[\s-]?)?[6-9]\d{9}(?!\d)",
         text
     )
 
-    phone = phone_match.group(0) if phone_match else None
+    return match.group(0) if match else "Not detected"
 
-    detected_skills = []
 
-    for skill in TECHNICAL_SKILLS:
-        if skill in text_lower:
-            detected_skills.append(skill)
+def detect_skills(text):
+    text_lower = text.lower()
 
-    missing_skills = []
+    detected = []
 
-    for skill in RECOMMENDED_SKILLS:
-        if skill not in text_lower:
-            missing_skills.append(skill)
+    for skill in SKILLS:
+        if skill.lower() in text_lower:
+            detected.append(skill)
 
-    resume_score = calculate_resume_score(
-        text,
-        detected_skills,
-        email,
-        phone
-    )
+    return detected
 
+
+def calculate_ats_score(skill_count):
+    if skill_count >= 15:
+        return 95
+    elif skill_count >= 12:
+        return 90
+    elif skill_count >= 10:
+        return 85
+    elif skill_count >= 7:
+        return 75
+    elif skill_count >= 5:
+        return 65
+    else:
+        return 50
+
+
+def get_missing_skills(detected_skills):
+    detected_lower = [skill.lower() for skill in detected_skills]
+
+    important_skills = [
+        "python",
+        "sql",
+        "git",
+        "github",
+        "machine learning",
+        "artificial intelligence",
+        "fastapi",
+        "rest api",
+        "docker",
+    ]
+
+    missing = []
+
+    for skill in important_skills:
+        if skill.lower() not in detected_lower:
+            missing.append(skill)
+
+    return missing
+
+
+def get_job_roles(detected_skills):
+    skills = [skill.lower() for skill in detected_skills]
+
+    roles = []
+
+    if "python" in skills:
+        roles.append("Python Developer")
+
+    if "machine learning" in skills or "artificial intelligence" in skills:
+        roles.append("Machine Learning / AI Engineer")
+
+    if "html" in skills and "css" in skills and "javascript" in skills:
+        roles.append("Frontend Developer")
+
+    if "react" in skills:
+        roles.append("React Developer")
+
+    if "sql" in skills:
+        roles.append("SQL / Database Developer")
+
+    if "fastapi" in skills or "django" in skills or "flask" in skills:
+        roles.append("Backend Developer")
+
+    if "data science" in skills:
+        roles.append("Data Science Intern / Junior Data Scientist")
+
+    if not roles:
+        roles.append("Software Developer")
+
+    return roles
+
+
+def get_learning_recommendations(missing_skills):
+    recommendations = []
+
+    for skill in missing_skills:
+        if skill == "docker":
+            recommendations.append("Learn Docker and containerization")
+        elif skill == "rest api":
+            recommendations.append("Learn REST API development")
+        elif skill == "machine learning":
+            recommendations.append("Strengthen Machine Learning fundamentals")
+        elif skill == "artificial intelligence":
+            recommendations.append("Learn practical Artificial Intelligence concepts")
+        else:
+            recommendations.append(f"Improve {skill.title()}")
+
+    return recommendations[:6]
+
+
+def get_career_readiness(skill_count, ats_score):
+    if ats_score >= 90 and skill_count >= 12:
+        return "Strong"
+
+    elif ats_score >= 75 and skill_count >= 7:
+        return "Good"
+
+    elif ats_score >= 60:
+        return "Developing"
+
+    else:
+        return "Needs Improvement"
+
+
+def get_suggestions(missing_skills, skill_count):
     suggestions = []
 
-    if len(detected_skills) < 8:
+    if skill_count < 8:
         suggestions.append(
-            "Add relevant technical skills that you can demonstrate."
-        )
-    else:
-        suggestions.append(
-            "Keep your technical skills focused on technologies you can demonstrate."
-        )
-
-    if "project" in text_lower:
-        suggestions.append(
-            "Add measurable results to your projects, such as accuracy, performance, users, or time saved."
-        )
-    else:
-        suggestions.append(
-            "Add projects with clear descriptions and technologies used."
-        )
-
-    if "experience" not in text_lower and "internship" not in text_lower:
-        suggestions.append(
-            "Add internship, training, or practical experience if available."
+            "Add more relevant technical skills to your resume."
         )
 
     suggestions.append(
-        "Mention the technologies used in each project clearly."
+        "Add measurable achievements and project results."
     )
 
     suggestions.append(
-        "Customize important keywords according to the internship or job description."
+        "Keep your resume focused on skills relevant to the target job."
+    )
+
+    if "rest api" in missing_skills:
+        suggestions.append(
+            "Consider adding REST API development experience."
+        )
+
+    if "docker" in missing_skills:
+        suggestions.append(
+            "Consider learning Docker for modern backend development."
+        )
+
+    return suggestions[:5]
+
+
+def analyze_resume(text):
+
+    detected_skills = detect_skills(text)
+
+    skill_count = len(detected_skills)
+
+    ats_score = calculate_ats_score(skill_count)
+
+    missing_skills = get_missing_skills(detected_skills)
+
+    job_roles = get_job_roles(detected_skills)
+
+    learning_recommendations = get_learning_recommendations(
+        missing_skills
+    )
+
+    career_readiness = get_career_readiness(
+        skill_count,
+        ats_score
+    )
+
+    suggestions = get_suggestions(
+        missing_skills,
+        skill_count
     )
 
     return {
-        "score": resume_score,
-        "email": email,
-        "phone": phone,
-        "skills": detected_skills,
-        "skill_count": len(detected_skills),
+        "ats_score": ats_score,
+
+        "email": extract_email(text),
+
+        "phone": extract_phone(text),
+
+        "skill_count": skill_count,
+
+        "detected_skills": detected_skills,
+
         "missing_skills": missing_skills,
-        "suggestions": suggestions,
+
+        "career_readiness": career_readiness,
+
+        "recommended_job_roles": job_roles,
+
+        "skills_to_learn": learning_recommendations,
+
+        "resume_suggestions": suggestions,
     }
